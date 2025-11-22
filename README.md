@@ -19,28 +19,42 @@
 Исходный код:
 ```
 """
-Ошибки (номера строк через пробел, данная строка - №2): !!!
+Ошибки (номера строк через пробел, данная строка - №2): 10 11 12
 """
-
-
 def power(x, y=2):
     """Вернуть x^y."""
     if y == 0:
         return 1
     else:
         return x * power(x, y - 1)
-
-
-x = int(input("x="))
-y = int(input("y="))
-print(power(x, y))
+x = int(input("x=")) # ValueError при некорректном x
+y = int(input("y=")) # ValueError при некорректном y
+print(power(x, y)) # RecursionError или TypeError при y < 0 или y — нецелое (но int() выше, так что y < 0 — основное)
 ```
 Исправленный код:
 ```
 # Выполнила: Паньшина З.А.
 # Группа: АБП-231
-
-
+def power(x, y=2):
+    """Вернуть x^y."""
+    if y == 0:
+        return 1
+    elif y < 0:
+        raise ValueError("Отрицательная степень не поддерживается в данной реализации.")
+    else:
+        return x * power(x, y - 1)
+try:
+    x = int(input("x="))
+    y = int(input("y="))
+    result = power(x, y)
+    print(result)
+except ValueError as e:
+    if "invalid literal" in str(e):
+        print("Ошибка: введено не целое число.")
+    else:
+        print(f"Ошибка: {e}")
+except RecursionError:
+    print("Ошибка: слишком большая степень — превышена глубина рекурсии.")
 ```
 
 ## Выводы:
